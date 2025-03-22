@@ -8,7 +8,7 @@ const Scoreboard = () => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io(`https://emily-quiz.it.com:8000`);
+        const newSocket = io(`https://emily-quiz.it.com:44679`);
         setSocket(newSocket);
 
         // Fetch the initial scoreboard data from the server
