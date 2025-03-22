@@ -10,7 +10,7 @@ const JoinScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const newSocket = io(`http://${window.location.hostname}:50000`);
+        const newSocket = io(`https://emily-quiz.it.com:50000`);
         setSocket(newSocket);
 
         newSocket.on('joinResponse', ({ valid, nameExists }) => {
