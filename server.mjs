@@ -33,7 +33,7 @@ const startServer = (port) => {
     });
 };
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 startServer(PORT);
 
 const io = new socketIo(server, {
