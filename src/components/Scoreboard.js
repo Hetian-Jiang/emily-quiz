@@ -8,7 +8,13 @@ const Scoreboard = () => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const newSocket = io(`wss://emily-quiz.it.com:44679`);
+        const connectionOptions = {
+            forceNew: true,
+            reconnectionAttempts: Infinity,
+            timeout: 10000,
+            transports: ['websocket']
+        };
+        const newSocket = io(`wss://emily-quiz.it.com:44679`, connectionOptions);
         setSocket(newSocket);
 
         // Fetch the initial scoreboard data from the server

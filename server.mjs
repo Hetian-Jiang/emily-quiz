@@ -1,13 +1,35 @@
 import express from 'express';
 import http from 'http';
-import { Server as socketIo } from 'socket.io';
+import { Server } from 'socket.io';
 import portfinder from 'portfinder';
-
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app);
+let server = http.createServer(app);
+
+// Middleware
+app.all('/', (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
+
+// Routes
+app.get('/scoreboard/:gameCode', (req, res) => {
+    const { gameCode } = req.params;
+    if (scoreboard[gameCode]) {
+        res.json(scoreboard[gameCode]);
+    } else {
+        res.status(404).json({ error: 'Game not found' });
+    }
+});
 
 // Start server
 const startServer = (port) => {
@@ -36,36 +58,13 @@ const startServer = (port) => {
 const PORT = process.env.PORT || 8000;
 startServer(PORT);
 
-const io = new socketIo(server, {
+const io = new Server(server, {
+    transports: ['websocket'],
     cors: {
-        origin: `*`,
+        origin: '*',
         methods: ['GET', 'POST'],
-        allowedHeaders: ['Origin', 'X-Requested-With', 'ContentType', 'Accept'],
+        allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
         credentials: true
-    }
-});
-
-const activeGames = {};
-let scoreboard = [];
-
-// Middleware
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    if (req.method === 'OPTIONS') {
-        res.sendStatus(200);
-    } else {
-        next();
-    }
-});
-
-app.get('/scoreboard/:gameCode', (req, res) => {
-    const { gameCode } = req.params;
-    if (scoreboard[gameCode]) {
-        res.json(scoreboard[gameCode]);
-    } else {
-        res.status(404).json({ error: 'Game not found' });
     }
 });
 

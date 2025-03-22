@@ -10,7 +10,13 @@ const JoinScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const newSocket = io(`wss://emily-quiz.it.com:44679`);
+        const connectionOptions = {
+            forceNew: true,
+            reconnectionAttempts: Infinity,
+            timeout: 10000,
+            transports: ['websocket']
+        };
+        const newSocket = io(`wss://emily-quiz.it.com:44679`, connectionOptions);
         setSocket(newSocket);
 
         newSocket.on('joinResponse', ({ valid, nameExists }) => {

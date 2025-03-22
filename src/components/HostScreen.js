@@ -11,7 +11,13 @@ const HostScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const newSocket = io(`wss://emily-quiz.it.com:44679`);
+        const connectionOptions = {
+            forceNew: true,
+            reconnectionAttempts: Infinity,
+            timeout: 10000,
+            transports: ['websocket']
+        };
+        const newSocket = io(`wss://emily-quiz.it.com:44679`, connectionOptions);
         console.log("window.location.hostname: ", window.location.hostname);
         setSocket(newSocket);
         newSocket.emit('createGame', { gameCode });
