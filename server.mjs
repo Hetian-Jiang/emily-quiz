@@ -68,6 +68,9 @@ const io = new Server(server, {
     }
 });
 
+const activeGames = {};
+const scoreboard = [];
+
 // Socket.io events
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
