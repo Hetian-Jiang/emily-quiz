@@ -61,7 +61,7 @@ startServer(PORT);
 const io = new Server(server, {
     transports: ['websocket'],
     cors: {
-        origin: '*',
+        origin: '*:*',
         methods: ['GET', 'POST'],
         allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
         credentials: true

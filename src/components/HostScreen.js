@@ -17,7 +17,7 @@ const HostScreen = () => {
             timeout: 10000,
             transports: ['websocket']
         };
-        const newSocket = io(`https://emily-quiz.it.com:22918`, connectionOptions);
+        const newSocket = io(`https://emily-quiz.it.com:${process.env.REACT_APP_SERVER_PORT}`, connectionOptions);
         console.log("window.location.hostname: ", window.location.hostname);
         setSocket(newSocket);
         newSocket.emit('createGame', { gameCode });
