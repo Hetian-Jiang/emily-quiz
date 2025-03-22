@@ -11,7 +11,7 @@ const HostScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const newSocket = io(`https://emily-quiz.it.com:50000`);
+        const newSocket = io(`https://emily-quiz.it.com:8000`);
         console.log("window.location.hostname: ", window.location.hostname);
         setSocket(newSocket);
         newSocket.emit('createGame', { gameCode });
