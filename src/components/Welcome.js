@@ -25,20 +25,7 @@ const Welcome = () => {
             </div>
 
             <button
-                className=" bg-[#D680FF]
-                            text-white
-                            text-lg
-                            md:text-xl
-                            px-6
-                            py-3
-                            rounded-lg
-                            opacity-80
-                            hover:opacity-100
-                            hover:scale-105
-                            transition-all
-                            duration-300
-                            shadow-md
-                            hover:shadow-lg"
+                className="bg-[#D680FF] text-white text-lg md:text-xl px-6 py-3 rounded-lg opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg"
                 onClick={handleStart}
             >
                 Start

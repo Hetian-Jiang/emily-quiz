@@ -2,15 +2,9 @@ import express from 'express';
 import http from 'http';
 import { Server as socketIo } from 'socket.io';
 import portfinder from 'portfinder';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 import dotenv from 'dotenv';
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
@@ -66,12 +60,6 @@ app.use((req, res, next) => {
     }
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
-
-// app.get('/api/config', (req, res) => {
-//     res.json({port: PORT});
-// });
-
 app.get('/scoreboard/:gameCode', (req, res) => {
     const { gameCode } = req.params;
     if (scoreboard[gameCode]) {
@@ -79,11 +67,6 @@ app.get('/scoreboard/:gameCode', (req, res) => {
     } else {
         res.status(404).json({ error: 'Game not found' });
     }
-});
-
-// Catch-all route to handle client-side routing
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Socket.io events

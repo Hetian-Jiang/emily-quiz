@@ -10,32 +10,26 @@ const JoinScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // const fetchConfig = async () => {
-        //     const response = await fetch(`/api/config`);
-        //     const data = await response.json();
-        //     console.log('Config:', data);
-            const newSocket = io(`http://${window.location.hostname}:50000`);
-            setSocket(newSocket);
+        const newSocket = io(`http://${window.location.hostname}:50000`);
+        setSocket(newSocket);
 
-            newSocket.on('joinResponse', ({ valid, nameExists }) => {
-                if (valid && !nameExists) {
-                    console.log('Joined game successfully.');
-                    setHasJoined(true);
-                } else if (!valid) {
-                    alert('Invalid game code.');
-                } else if (nameExists) {
-                    alert('Name already exists in this game.');
-                }
-            });
+        newSocket.on('joinResponse', ({ valid, nameExists }) => {
+            if (valid && !nameExists) {
+                console.log('Joined game successfully.');
+                setHasJoined(true);
+            } else if (!valid) {
+                alert('Invalid game code.');
+            } else if (nameExists) {
+                alert('Name already exists in this game.');
+            }
+        });
 
-            newSocket.on('startGame', ({ gameCode }) => {
-                console.log(`Navigating to game ${gameCode} is starting! ${name} get ready!`);
-                navigate(`/game/${gameCode}/${name}`);
-            });
+        newSocket.on('startGame', ({ gameCode }) => {
+            console.log(`Navigating to game ${gameCode} is starting! ${name} get ready!`);
+            navigate(`/game/${gameCode}/${name}`);
+        });
 
-            return () => newSocket.disconnect();
-        // }
-        // fetchConfig();
+        return () => newSocket.disconnect();
     }, [navigate, name]);
 
     const handleJoinGame = () => {

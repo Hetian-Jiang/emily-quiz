@@ -8,43 +8,37 @@ const Scoreboard = () => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        // const fetchConfig = async () => {
-        //     const response = await fetch(`/api/config`);
-        //     const data = await response.json();
-        //     console.log('Config:', data);
-            const newSocket = io(`http://${window.location.hostname}:50000`);
-            setSocket(newSocket);
+        const newSocket = io(`http://${window.location.hostname}:50000`);
+        setSocket(newSocket);
 
-            // Fetch the initial scoreboard data from the server
-            fetch(`http://${window.location.hostname}:50000/scoreboard/${gameCode}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => setScoreboard(data.sort((a, b) => b.score - a.score))) // Sort the scoreboard by score, descending
-                .catch(error => console.error('Error fetching scoreboard:', error));
+        // Fetch the initial scoreboard data from the server
+        fetch(`http://${window.location.hostname}:50000/scoreboard/${gameCode}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => setScoreboard(data.sort((a, b) => b.score - a.score))) // Sort the scoreboard by score, descending
+            .catch(error => console.error('Error fetching scoreboard:', error));
 
-            // Listen for the updateScoreboard event to update the scoreboard in real-time
-            newSocket.on('updateScoreboard', ({ name, score }) => {
-                setScoreboard((prevScoreboard) => {
-                    const updatedScoreboard = [...prevScoreboard];
-                    const playerIndex = updatedScoreboard.findIndex(player => player.name === name);
-                    if (playerIndex !== -1) {
-                        updatedScoreboard[playerIndex].score = score;
-                    } else {
-                        updatedScoreboard.push({ name, score });
-                    }
-                    return updatedScoreboard.sort((a, b) => b.score - a.score); // Sort the scoreboard by score, descending
-                });
+        // Listen for the updateScoreboard event to update the scoreboard in real-time
+        newSocket.on('updateScoreboard', ({ name, score }) => {
+            setScoreboard((prevScoreboard) => {
+                const updatedScoreboard = [...prevScoreboard];
+                const playerIndex = updatedScoreboard.findIndex(player => player.name === name);
+                if (playerIndex !== -1) {
+                    updatedScoreboard[playerIndex].score = score;
+                } else {
+                    updatedScoreboard.push({ name, score });
+                }
+                return updatedScoreboard.sort((a, b) => b.score - a.score); // Sort the scoreboard by score, descending
             });
+        });
 
-            return () => {
-                newSocket.disconnect();
-            };
-        // }
-        // fetchConfig();
+        return () => {
+            newSocket.disconnect();
+        };
     }, [gameCode]);
 
     // We only need the top 3 and the last player
