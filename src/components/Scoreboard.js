@@ -14,7 +14,7 @@ const Scoreboard = () => {
             timeout: 10000,
             transports: ['websocket']
         };
-        const newSocket = io(`wss://emily-quiz.it.com:44679`, connectionOptions);
+        const newSocket = io(`wss://emily-quiz.it.com:22918`, connectionOptions);
         setSocket(newSocket);
 
         // Fetch the initial scoreboard data from the server

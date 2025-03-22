@@ -8,6 +8,6 @@ const connectionOptions = {
     timeout: 10000,
     transports: ['websocket']
 };
-const socket = io(`wss://emily-quiz.it.com:44679`, connectionOptions);
+const socket = io(`wss://emily-quiz.it.com:22918`, connectionOptions);
 
 export default socket;
