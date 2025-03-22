@@ -10,13 +10,7 @@ const JoinScreen = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const connectionOptions = {
-            forceNew: true,
-            reconnectionAttempts: Infinity,
-            timeout: 10000,
-            transports: ['websocket']
-        };
-        const newSocket = io(`https://emily-quiz.it.com:${process.env.REACT_APP_SERVER_PORT}`, connectionOptions);
+        const newSocket = io(`${process.env.REACT_APP_URL}:${process.env.REACT_APP_SERVER_PORT}`);
         setSocket(newSocket);
 
         newSocket.on('joinResponse', ({ valid, nameExists }) => {

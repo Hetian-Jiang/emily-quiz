@@ -9,8 +9,11 @@ dotenv.config();
 const app = express();
 let server = http.createServer(app);
 
+const activeGames = {};
+const scoreboard = [];
+
 // Middleware
-app.all('/', (req, res, next) => {
+app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -25,6 +28,7 @@ app.all('/', (req, res, next) => {
 app.get('/scoreboard/:gameCode', (req, res) => {
     const { gameCode } = req.params;
     if (scoreboard[gameCode]) {
+        res.setHeader('Content-Type', 'application/json');
         res.json(scoreboard[gameCode]);
     } else {
         res.status(404).json({ error: 'Game not found' });
@@ -59,17 +63,15 @@ const PORT = process.env.PORT || 8000;
 startServer(PORT);
 
 const io = new Server(server, {
-    transports: ['websocket'],
     cors: {
-        origin: '*:*',
+        origin: '*',
         methods: ['GET', 'POST'],
         allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
         credentials: true
     }
 });
 
-const activeGames = {};
-const scoreboard = [];
+
 
 // Socket.io events
 io.on('connection', (socket) => {
